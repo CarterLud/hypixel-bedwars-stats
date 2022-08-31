@@ -26,55 +26,55 @@ def save_key(new_key):
         key_file.write(new_key)
 
 
-def get_duos_stats(name):
-    api_key = get_key()
-    player = mcuuid.MCUUID(name=name)
-    uuid = player.uuid
-    uri = "https://api.hypixel.net/player?key={}&uuid={}"
-    url = uri.format(api_key, uuid)
-    response = requests.get(url).json()
+def get_stats(name, mode):
+    for i in name:
+        api_key = "d7a794fb-1e52-422d-85af-f19ad1c70a9e"
+        player = mcuuid.MCUUID(name=i)
+        uuid = player.uuid
+        uri = "https://api.hypixel.net/player?key={}&uuid={}"
+        url = uri.format(api_key, uuid)
+        response = requests.get(url).json()
 
-    bedwars_duos_final_deaths = response.get('player').get('stats').get('Bedwars').get('eight_two_final_deaths_bedwars')
-    bedwars_duos_losses = response.get('player').get('stats').get('Bedwars').get('eight_two_losses_bedwars')
-    bedwars_level = response.get('player').get('achievements').get('bedwars_level')
-    bedwars_duos_wins = response.get('player').get('stats').get('Bedwars').get('eight_two_wins_bedwars')
-    bedwars_duos_finals = response.get('player').get('stats').get('Bedwars').get('eight_two_final_kills_bedwars')
-    bedwars_duos_final_deaths = response.get('player').get('stats').get('Bedwars').get('eight_two_final_deaths_bedwars')
-    bedwars_finals = response.get('player').get('stats').get('Bedwars').get('final_kills_bedwars')
-    bedwars_final_deaths = response.get('player').get('stats').get('Bedwars').get('final_deaths_bedwars')
-    bedwars_duos_fkdr = round((bedwars_duos_finals / bedwars_duos_final_deaths), 3)
-    bedwars_fkdr = round((bedwars_finals / bedwars_final_deaths), 3)
-    bedwars_duos_wlr = round((bedwars_duos_wins / bedwars_duos_losses), 3)
-    print("This person has: {} bedwars duos finals, {} bedwars duos final deaths and {} bedwars duos wins.".format(bedwars_duos_finals, bedwars_duos_wins, bedwars_duos_final_deaths))
-    print("This person's overall FKDR is {}.".format(bedwars_fkdr))
-    print("This person's duos FKDR is {}".format(bedwars_duos_fkdr))
-    print("This person's duos WLR is {}".format(bedwars_duos_wlr))
-    print("This person has {} stars.".format(bedwars_level))
-
-
-while True:
-    name = input("Enter a player name for duos stats: ")
-    get_duos_stats(name)
-
-
-def get_4v4_stats(name):
-    api_key = get_key()
-    player = mcuuid.MCUUID(name=name)
-    uuid = player.uuid
-    uri = "https://api.hypixel.net/player?key={}&uuid={}"
-    url = uri.format(api_key, uuid)
-    response = requests.get(url).json()
-
-    bedwars_4v4_wins = response.get('player').get('stats').get('Bedwars').get('two_four_wins_bedwars')
-    bedwars_4v4_losses = response.get('player').get('stats').get('Bedwars').get('two_four_losses_bedwars')
-    bedwars_4v4_finals = response.get('player').get('stats').get('Bedwars').get('two_four_final_kills_bedwars')
-    bedwars_4v4_final_deaths = response.get('player').get('stats').get('Bedwars').get('two_four_final_deaths_bedwars')
-    bedwars_4v4_fkdr = round((bedwars_4v4_finals / bedwars_4v4_final_deaths), 3)
-    bedwars_4v4_wlr = round((bedwars_4v4_wins / bedwars_4v4_losses), 3)
-    print("This person's 4v4 FKDR is {}".format(bedwars_4v4_fkdr))
-    print("This person's 4v4 WLR is {}".format(bedwars_4v4_wlr))
+        bedwars_wins = response.get('player').get('stats').get('Bedwars').get(mode + 'wins_bedwars')
+        bedwars_losses = response.get('player').get('stats').get('Bedwars').get(mode + 'losses_bedwars')
+        bedwars_finals = response.get('player').get('stats').get('Bedwars').get(mode + 'final_kills_bedwars')
+        bedwars_final_deaths = response.get('player').get('stats').get('Bedwars').get(mode + 'final_deaths_bedwars')
+        bedwars_fkdr = round((bedwars_finals / bedwars_final_deaths), 3)
+        bedwars_wlr = round((bedwars_wins / bedwars_losses), 3)
+        bedwars_winstreak = response.get('player').get('stats').get('Bedwars').get(mode + 'winstreak')
+        bedwars_star = response.get('player').get('achievements').get("bedwars_level")
+        print("Name: {} "
+              "Wins: {} "
+              "Losses: {} "
+              "Finals: {} "
+              "Final deaths: {} "
+              "FKDR: {} "
+              "WLR: {} "
+              "Star: {} "
+              "Winstreak: {} ".format(i, bedwars_wins, bedwars_losses, bedwars_finals, bedwars_final_deaths,
+                                      bedwars_fkdr, bedwars_wlr, bedwars_star, bedwars_winstreak)
+              )
 
 
 while True:
-    name = input("Enter a player name for 4v4 stats: ")
-    get_4v4_stats(name)
+    print("\n")
+    name = input("Enter player name (if mulitple seperate by spaces): ")
+    name_list = name.rsplit(" ")
+    mode = input("Enter mode: ").upper()
+
+    if mode == "SOLOS":
+        mode_name = "eight_one_"
+    elif mode == "DUOS":
+        mode_name = "eight_two_"
+    elif mode == "THREES":
+        mode_name = "four_three_"
+    elif mode == "FOURS":
+        mode_name = "four_four_"
+    elif mode == "4v4":
+        mode_name = "two_four_"
+    else:
+        print("You didn't input a mode, so we are printing your overall stats!!")
+        mode_name = ""
+
+    get_stats(name_list, mode_name)
+
