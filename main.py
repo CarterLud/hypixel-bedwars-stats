@@ -4,9 +4,30 @@ import requests
 import mcuuid
 import pprint
 
+from os import path
+
+
+key_path = 'key.txt'
+
+
+def get_key():
+    if not path.exists(key_path):
+        key_input = input("Please enter your Hypixel API Key: ").strip()
+        save_key(key_input)
+        return key_input
+
+    with open(key_path, 'r') as key_file:
+        key = key_file.read().strip()
+    return key
+
+
+def save_key(new_key):
+    with open(key_path, 'w') as key_file:
+        key_file.write(new_key)
+
 
 def get_duos_stats(name):
-    api_key = "acd50aa6-7d38-49c3-9bf8-f01eb1541a81"
+    api_key = get_key()
     player = mcuuid.MCUUID(name=name)
     uuid = player.uuid
     uri = "https://api.hypixel.net/player?key={}&uuid={}"
@@ -37,7 +58,7 @@ while True:
 
 
 def get_4v4_stats(name):
-    api_key = "acd50aa6-7d38-49c3-9bf8-f01eb1541a81"
+    api_key = get_key()
     player = mcuuid.MCUUID(name=name)
     uuid = player.uuid
     uri = "https://api.hypixel.net/player?key={}&uuid={}"
