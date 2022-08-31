@@ -1,10 +1,38 @@
-import math
 
+from pathlib import Path
 import requests
 import mcuuid
-import pprint
-
 from os import path
+
+client_name = input("Please enter client name: (lunar or default): ")
+
+
+def get_log():
+
+    home = str(Path.home()) + "/"
+
+    if client_name == "lunar":
+        log_loc = home + ".lunarclient/offline/multiver/logs/latest.log"
+
+    else:
+        log_loc = home + "AppData/Roaming/.minecraft/logs/latest.log"
+
+    if not Path.exists(Path(log_loc)):
+        raise FileNotFoundError("Failed to locate log file " + log_loc)
+
+    with open(log_loc, "r") as f:
+        log_text = f.read()
+
+    return log_text, log_loc
+
+
+def get_who(line):
+    players = []
+    if "[Client thread/INFO]: [CHAT] ONLINE: " in line:
+        msg = line.split("ONLINE: ")[1]
+        players.append(msg.rsplit(", "))
+    else:
+        print("... welp, something went wrong")
 
 
 key_path = 'key.txt'
@@ -58,7 +86,7 @@ def get_stats(name, mode):
 
 while True:
     print("\n")
-    name = input("Enter player name (if mulitple seperate by spaces): ")
+    name = input("Enter player name (if multiple separate by spaces): ")
     name_list = name.rsplit(" ")
     mode = input("Enter mode: ").upper()
 
@@ -77,4 +105,3 @@ while True:
         mode_name = ""
 
     get_stats(name_list, mode_name)
-
