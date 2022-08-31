@@ -21,7 +21,22 @@ def get_stats(name, mode):
     return [bedwars_wins, bedwars_losses, bedwars_finals, bedwars_final_deaths, bedwars_fkdr, bedwars_wlr, bedwars_star, bedwars_winstreak]
 
 
-# def compare_format(player_one_data):
+def compare_format(player_one_data, player_two_data, player1, player2):
+    print("\n")
+
+    lengthofData = len(player_one_data)
+    order_of_operation = ["wins", "losses", "finals", "final deaths", "fkdr", "wlr", "star", "winstreak"]
+
+    for i in range(lengthofData):
+        if player_one_data[i] == player_two_data[i]:
+            print("both players have the same amount of {}".format(order_of_operation[i]))
+
+        elif player_one_data[i] > player_two_data[i]:
+            print("{}({}) has {} more {} than {}({})".format(player1, player_one_data[i] ,round(player_one_data[i] - player_two_data[i], 3), order_of_operation[i], player2, player_two_data[i]))
+
+        elif player_two_data[0] > player_one_data[0]:
+            print("{}({}) has {} more {} than {}({})".format(player2, player_two_data[i], round(player_two_data[i] - player_one_data[i], 3), order_of_operation[i], player1, player_one_data[i]))
+
 
 def compare(name, mode):
     counter = 0
@@ -37,93 +52,8 @@ def compare(name, mode):
             continue
 
         counter = counter + 1
-# wins
 
-    if player_one_data[0] > player_two_data[0]:
-        print("{} has {} more wins than {}".format(player1, player_one_data[0] - player_two_data[0], player2))
-
-    elif player_two_data[0] > player_one_data[0]:
-        print("{} has {} more wins than {}".format(player2, player_two_data[0] - player_one_data[0], player1))
-
-    else:
-        print("both players have the same amount of wins")
-
-
-    # losses
-
-    if player_one_data[1] > player_two_data[1]:
-        print("{} has {} more losses than {}".format(player1, player_one_data[1] - player_two_data[1], player2))
-
-    elif player_two_data[1] > player_one_data[1]:
-        print("{} has {} more losses than {}".format(player2, player_two_data[1] - player_one_data[1], player1))
-
-    else:
-        print("both players have the same amount of losses")
-
-    # finals
-
-    if player_one_data[2] > player_two_data[2]:
-        print("{} has {} more finals than {}".format(player1, player_one_data[2] - player_two_data[2], player2))
-
-    elif player_two_data[2] > player_one_data[2]:
-        print("{} has {} more finals than {}".format(player2, player_two_data[2] - player_one_data[2], player1))
-
-    else:
-        print("both players have the same amount of finals")
-# final deaths
-
-    if player_one_data[3] > player_two_data[3]:
-        print("{} has {} more final deaths than {}".format(player1, player_one_data[3] - player_two_data[3], player2))
-
-    elif player_two_data[3] > player_one_data[3]:
-        print("{} has {} more final deaths than {}".format(player2, player_two_data[3] - player_one_data[3], player1))
-
-    else:
-        print("both players have the same amount of final deaths")
-
-        # fkdr
-
-    if player_one_data[4] > player_two_data[4]:
-        print("{} has {} higher fkdr than {}".format(player1, player_one_data[4] - player_two_data[4], player2))
-
-    elif player_two_data[4] > player_one_data[4]:
-        print("{} has {} higher fkdr than {}".format(player2, player_two_data[4] - player_one_data[4], player1))
-
-    else:
-        print("both players have the same fkdr")
-
-    # wlr
-
-    if player_one_data[5] > player_two_data[5]:
-        print("{} has {} higher wlr than {}".format(player1, player_one_data[5] - player_two_data[5], player2))
-
-    elif player_two_data[5] > player_one_data[5]:
-        print("{} has {} higher wlr than {}".format(player2, player_two_data[5] - player_one_data[5], player1))
-
-    else:
-        print("both players have the same wlr")
-
-    # star
-
-    if player_one_data[6] > player_two_data[6]:
-        print("{} has {} higher star than {}".format(player1, player_one_data[6] - player_two_data[6], player2))
-
-    elif player_two_data[6] > player_one_data[6]:
-        print("{} has {} higher star than {}".format(player2, player_two_data[6] - player_one_data[6], player1))
-
-    else:
-        print("both players have the same star level")
-# winstreak
-
-    if player_one_data[7] > player_two_data[7]:
-        print("{} has {} higher winstreak than {}".format(player1, player_one_data[7] - player_two_data[7], player2))
-
-    elif player_two_data[7] > player_one_data[7]:
-        print("{} has {} higher winstreak than {}".format(player2, player_two_data[7] - player_one_data[7], player1))
-
-    else:
-        print("both players have the same winstreak")
-
+    compare_format(player_one_data, player_two_data, player1, player2)
 
 
 compare_or_view = input("would you like to compare or view players stats? ").lower()
@@ -133,7 +63,7 @@ if compare_or_view == "compare":
     player_names_list = player_names.rsplit(" ")
 
     if len(player_names_list) == 2:
-        mode_name = "eight_two_"
+        mode_name = ""
         compare(player_names_list, mode_name)
 
 
